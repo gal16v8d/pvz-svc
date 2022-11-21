@@ -1,0 +1,13 @@
+{
+    "python.analysis.extraPaths": ["${workspaceFolder}/.venv/lib"],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pydocstyleEnabled": false,
+    "python.linting.ignorePatterns": [
+        ".vscode/*.py",
+        "**/site-packages/**/*.py"
+    ],
+    "python.formatting.provider": "autopep8",
+    "editor.formatOnSave": true
+}
