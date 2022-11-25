@@ -3,13 +3,14 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from models.enums import Damage, Effect, Recharge, Toughness, Usage
+from models.enums import Damage, Effect, Production, Recharge, Toughness, Usage
 
 
 class PlantBase(BaseModel):
-    production: Optional[list[str]] = Field(default=None)
+    production: Optional[list[Production]] = Field(default=None)
     toughness: Optional[Toughness] = Field(default=None)
-    damage: Optional[Damage] = Field(default=None)
+    damage: Optional[list[Damage]] = Field(default=None)
+    damage_notes: Optional[str] = Field(default=None)
     range: Optional[str] = Field(default=None)
     usage: Optional[list[Usage]] = Field(default=None)
     effect: Optional[Effect] = Field(default=None)
@@ -31,7 +32,7 @@ class PlantBase(BaseModel):
                 'name': 'Winter Melons',
                 'description': 'Winter Melons do heavy damage '
                 'and slow groups of zombies',
-                'damage': 'very heavy',
+                'damage': ['very heavy'],
                 'range': 'lobbed',
                 'firing_speed': '1/2 x',
                 'special': 'Melons damage and freeze nearby enemies on impact',
