@@ -17,7 +17,7 @@ class PlantBase(BaseModel):
     firing_speed: Optional[str] = Field(default=None)
     special: Optional[str] = Field(default=None)
     constraint: Optional[list[str]] = Field(default=None)
-    cost: Optional[int] = Field(default=None)
+    cost: Optional[int] = Field(default=None, ge=0, le=500)
     recharge: Optional[Recharge] = Field(default=None)
 
     def dict(self, *args, **kwargs):
@@ -50,7 +50,7 @@ class Plant(PlantBase):
     id: str = Field(default_factory=uuid.uuid4, alias='_id')
     name: str = Field(..., min_length=3)
     description: str = Field(..., min_length=10)
-    text: str = Field(...)
+    text: str = Field(..., min_length=10)
 
 
 class PlantPartial(PlantBase):

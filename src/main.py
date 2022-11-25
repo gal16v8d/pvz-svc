@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from dotenv import dotenv_values
 from pymongo import MongoClient
-from routes import health_router, plant_router
+from routes import *
 
 config = dotenv_values('.env')
 app: FastAPI = FastAPI(title="pvz-service",
@@ -24,4 +24,7 @@ def shutdown_db_client():
 
 
 app.include_router(health_router)
+app.include_router(achievement_router)
+app.include_router(minigame_router)
 app.include_router(plant_router)
+app.include_router(puzzle_router)

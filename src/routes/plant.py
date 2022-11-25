@@ -4,9 +4,10 @@ from typing import List
 from fastapi import APIRouter, Body, HTTPException, Request, Response, Path
 from fastapi.encoders import jsonable_encoder
 
+from consts import constants
 from models.plant import Plant, PlantPartial
 
-plant_db_key: str = 'plants'
+db_key: str = 'plants'
 
 plant_router: APIRouter = APIRouter(
     tags=['plants'],
@@ -18,8 +19,7 @@ plant_router: APIRouter = APIRouter(
                   response_description='List all plants',
                   response_model=List[Plant])
 def list_plants(request: Request) -> List[Plant]:
-    plants = list(request.app.database[plant_db_key].find())
-    return plants
+    return list(request.app.database[db_key].find())
 
 
 @plant_router.get('/{id}',
@@ -38,7 +38,7 @@ def find_plant(request: Request, id: str = Path(...)) -> Plant:
     '''
     if (
         existing_plant :=
-        request.app.database[plant_db_key].find_one({'_id': id})
+        request.app.database[db_key].find_one({'_id': id})
     ) is not None:
         return existing_plant
 
@@ -47,18 +47,18 @@ def find_plant(request: Request, id: str = Path(...)) -> Plant:
 
 
 @plant_router.post('/', status_code=HTTPStatus.CREATED,
-                   response_description='Update a plant', response_model=Plant)
+                   response_description='Create a Plant', response_model=Plant)
 def create_plant(request: Request, plant: Plant = Body(...)) -> Plant:
     if (request.app.env == 'dev'):
         plant_enc = jsonable_encoder(plant)
-        new_plant = request.app.database[plant_db_key].insert_one(plant_enc)
-        created_plant: Plant = request.app.database[plant_db_key].find_one(
+        new_plant = request.app.database[db_key].insert_one(plant_enc)
+        created_plant: Plant = request.app.database[db_key].find_one(
             {'_id': new_plant.inserted_id}
         )
         return created_plant
 
     raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED,
-                        detail='PvZ API is in read-only mode')
+                        detail=constants.PVZ_READ_ONLY)
 
 
 @plant_router.put('/{id}',
@@ -69,7 +69,7 @@ def update_plant(request: Request, id: str = Path(...),
     if (request.app.env == 'dev'):
         plant = {k: v for k, v in plant.dict().items() if v is not None}
         if len(plant) >= 1:
-            update_result = request.app.database[plant_db_key].update_one(
+            update_result = request.app.database[db_key].update_one(
                 {'_id': id}, {'$set': plant}
             )
 
@@ -81,14 +81,14 @@ def update_plant(request: Request, id: str = Path(...),
         return find_plant(request, id)
 
     raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED,
-                        detail='PvZ API is in read-only mode')
+                        detail=constants.PVZ_READ_ONLY)
 
 
 @plant_router.delete('/{id}', response_description='Delete a plant')
 def delete_plant(request: Request, response: Response,
                  id: str = Path(...)) -> Response:
     if (request.app.env == 'dev'):
-        delete_result = request.app.database[plant_db_key].delete_one({
+        delete_result = request.app.database[db_key].delete_one({
             '_id': id})
 
         if delete_result.deleted_count == 1:
@@ -99,4 +99,4 @@ def delete_plant(request: Request, response: Response,
                             detail=f'Plant with ID {id} not found')
 
     raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED,
-                        detail='PvZ API is in read-only mode')
+                        detail=constants.PVZ_READ_ONLY)
