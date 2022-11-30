@@ -1,8 +1,10 @@
 import uuid
-from typing import Optional
+from typing import Optional, Any
 
 from pydantic import BaseModel, Field
 
+from consts.constants import NAME
+from models.base_constraint import BaseConstraint
 from models.enums import Damage, Effect, Production, Recharge, Toughness, Usage
 
 
@@ -57,3 +59,9 @@ class PlantPartial(PlantBase):
     name: Optional[str] = Field(default=None)
     description: Optional[str] = Field(default=None)
     text: Optional[str] = Field(default=None)
+
+
+class PlantConstraint(BaseConstraint):
+    def __init__(self, db: Any, collection: str = 'plants',
+                 attrib: str = NAME) -> None:
+        super().__init__(db, collection, attrib)

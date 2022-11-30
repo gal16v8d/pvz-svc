@@ -7,7 +7,7 @@ from consts.constants import NAME
 from models.base_constraint import BaseConstraint
 
 
-class AchievementBase(BaseModel):
+class SurvivalBase(BaseModel):
 
     def dict(self, *args, **kwargs):
         if kwargs and kwargs.get('exclude_none') is not None:
@@ -18,24 +18,27 @@ class AchievementBase(BaseModel):
         allow_population_by_field_name = True
         schema_extra = {
             'example': {
-                'name': 'Home Lawn Security',
-                'description': 'Complete adventure mode'
+                'name': 'Survival: Day',
+                'flags': 4,
+                'endless': False
             }
         }
 
 
-class Achievement(AchievementBase):
+class Survival(SurvivalBase):
     id: str = Field(default_factory=uuid.uuid4, alias='_id')
     name: str = Field(..., min_length=3)
-    description: str = Field(..., min_length=10)
+    flags: Optional[int] = Field(default=None)
+    endless: Optional[bool] = Field(default=None)
 
 
-class AchievementPartial(AchievementBase):
+class SurvivalPartial(SurvivalBase):
     name: Optional[str] = Field(default=None)
-    description: Optional[str] = Field(default=None)
+    flags: Optional[int] = Field(default=None)
+    endless: Optional[bool] = Field(default=None)
 
 
-class AchievementConstraint(BaseConstraint):
-    def __init__(self, db: Any, collection: str = 'achievements',
+class SurvivalConstraint(BaseConstraint):
+    def __init__(self, db: Any, collection: str = 'survivals',
                  attrib: str = NAME) -> None:
         super().__init__(db, collection, attrib)

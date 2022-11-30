@@ -1,7 +1,10 @@
 import uuid
-from typing import Optional
+from typing import Optional, Any
 
 from pydantic import BaseModel, Field
+
+from consts.constants import NAME
+from models.base_constraint import BaseConstraint
 from models.enums import PuzzleCategory
 
 
@@ -34,3 +37,9 @@ class PuzzlePartial(PuzzleBase):
     name: Optional[str] = Field(default=None)
     category: Optional[PuzzleCategory] = Field(default=None)
     with_streak: bool = Field(default=False)
+
+
+class PuzzleConstraint(BaseConstraint):
+    def __init__(self, db: Any, collection: str = 'puzzles',
+                 attrib: str = NAME) -> None:
+        super().__init__(db, collection, attrib)

@@ -1,6 +1,10 @@
 import uuid
+from typing import Any
 
 from pydantic import BaseModel, Field
+
+from consts.constants import NAME
+from models.base_constraint import BaseConstraint
 
 
 class MiniGame(BaseModel):
@@ -19,3 +23,9 @@ class MiniGame(BaseModel):
                 'name': 'ZomBotany'
             }
         }
+
+
+class MiniGameConstraint(BaseConstraint):
+    def __init__(self, db: Any, collection: str = 'minigames',
+                 attrib: str = NAME) -> None:
+        super().__init__(db, collection, attrib)
