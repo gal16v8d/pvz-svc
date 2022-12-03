@@ -1,6 +1,11 @@
 # pvz-svc
 
-FastApi + Mongo REST API wiki about Plants Vs Zombies videogame
+<p align="center">
+  <img width="200" src="fast-api-logo.png" alt="FastApi logo">
+  <p align="center">
+    FastApi + Mongo REST API wiki about Plants Vs Zombies videogame
+  </p>
+</p>
 
 # Get started
 
