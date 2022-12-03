@@ -13,7 +13,7 @@ class PuzzleBase(BaseModel):
     def dict(self, *args, **kwargs):
         if kwargs and kwargs.get('exclude_none') is not None:
             kwargs['exclude_none'] = True
-            return BaseModel.dict(self, *args, **kwargs)
+        return BaseModel.dict(self, *args, **kwargs)
 
     class Config:
         allow_population_by_field_name = True

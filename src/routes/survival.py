@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from fastapi import Body, Request, Path
+from fastapi import Body, Path, Request
 from fastapi.encoders import jsonable_encoder
 
 from models.survival import Survival, SurvivalPartial
@@ -20,23 +20,14 @@ def create_survival(request: Request, survival: Survival = Body(...)
                     ) -> Survival:
     base_instance.validate_env(request)
     enc_data = jsonable_encoder(survival)
-    created_data: Survival = base_instance.create(request, enc_data)
-    return created_data
+    return base_instance.create(request, enc_data)
 
 
 @survival_router.put('/{id}',
                      response_description='Update a Survival',
                      response_model=Survival)
-def update_puzzle(request: Request, id: str = Path(...),
-                  survival: SurvivalPartial = Body(...)) -> Survival:
+def update_survival(request: Request, id: str = Path(...),
+                    survival: SurvivalPartial = Body(...)) -> Survival:
     base_instance.validate_env(request)
     survival = {k: v for k, v in survival.dict().items() if v is not None}
-    if len(survival) >= 1:
-        update_result = request.app.database[db_key].update_one(
-            {'_id': id}, {'$set': survival}
-        )
-
-        if update_result.modified_count == 0:
-            base_instance.id_not_found(id)
-
-    return base_instance.find_by_id(request, id)
+    return base_instance.update(request, id, survival)

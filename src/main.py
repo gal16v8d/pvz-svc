@@ -19,10 +19,15 @@ app: FastAPI = FastAPI(title="pvz-service",
 
 def create_indexes(db):
     AchievementConstraint(db).create_indexes()
+    GardenNameConstraint(db).create_indexes()
+    GardenNumberConstraint(db).create_indexes()
     MiniGameConstraint(db).create_indexes()
-    PlantConstraint(db).create_indexes()
+    PlantNameConstraint(db).create_indexes()
+    PlantNumberConstraint(db).create_indexes()
     PuzzleConstraint(db).create_indexes()
     SurvivalConstraint(db).create_indexes()
+    ZombieNameConstraint(db).create_indexes()
+    ZombieNumberConstraint(db).create_indexes()
 
 
 @app.exception_handler(DuplicateKeyError)
@@ -48,7 +53,9 @@ def shutdown_db_client():
 
 app.include_router(health_router)
 app.include_router(achievement_router)
+app.include_router(garden_router)
 app.include_router(minigame_router)
 app.include_router(plant_router)
 app.include_router(puzzle_router)
 app.include_router(survival_router)
+app.include_router(zombie_router)

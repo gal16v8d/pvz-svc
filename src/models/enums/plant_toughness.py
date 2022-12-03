@@ -1,6 +1,6 @@
 from enum import Enum
 
 
-class Toughness(str, Enum):
+class PlantToughness(str, Enum):
     HIGH: str = 'high'
     VERY_HIGH: str = 'very high'

@@ -3,14 +3,14 @@ from typing import Optional, Any
 
 from pydantic import BaseModel, Field
 
-from consts.constants import NAME
+from consts.constants import NAME, NUMBER
 from models.base_constraint import BaseConstraint
-from models.enums import Damage, Effect, Production, Recharge, Toughness, Usage
+from models.enums import *
 
 
 class PlantBase(BaseModel):
     production: Optional[list[Production]] = Field(default=None)
-    toughness: Optional[Toughness] = Field(default=None)
+    toughness: Optional[PlantToughness] = Field(default=None)
     damage: Optional[list[Damage]] = Field(default=None)
     damage_notes: Optional[str] = Field(default=None)
     range: Optional[str] = Field(default=None)
@@ -25,7 +25,7 @@ class PlantBase(BaseModel):
     def dict(self, *args, **kwargs):
         if kwargs and kwargs.get('exclude_none') is not None:
             kwargs['exclude_none'] = True
-            return BaseModel.dict(self, *args, **kwargs)
+        return BaseModel.dict(self, *args, **kwargs)
 
     class Config:
         allow_population_by_field_name = True
@@ -50,18 +50,26 @@ class PlantBase(BaseModel):
 
 class Plant(PlantBase):
     id: str = Field(default_factory=uuid.uuid4, alias='_id')
+    number: int = Field(..., ge=0, le=48)
     name: str = Field(..., min_length=3)
     description: str = Field(..., min_length=10)
     text: str = Field(..., min_length=10)
 
 
 class PlantPartial(PlantBase):
+    number: Optional[int] = Field(default=None)
     name: Optional[str] = Field(default=None)
     description: Optional[str] = Field(default=None)
     text: Optional[str] = Field(default=None)
 
 
-class PlantConstraint(BaseConstraint):
+class PlantNameConstraint(BaseConstraint):
     def __init__(self, db: Any, collection: str = 'plants',
                  attrib: str = NAME) -> None:
+        super().__init__(db, collection, attrib)
+
+
+class PlantNumberConstraint(BaseConstraint):
+    def __init__(self, db: Any, collection: str = 'plant',
+                 attrib: str = NUMBER) -> None:
         super().__init__(db, collection, attrib)

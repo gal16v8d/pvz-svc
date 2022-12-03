@@ -1,6 +1,7 @@
 from http import HTTPStatus
-from typing import List, Any
-from fastapi import APIRouter, Request, Response, Path, HTTPException
+from typing import Any, List
+
+from fastapi import APIRouter, HTTPException, Path, Request, Response
 
 from consts import constants
 
@@ -25,6 +26,9 @@ class BaseRoute:
             status_code=HTTPStatus.NO_CONTENT,
             response_description=f'Delete one {self.single_path}',
             response_model={}, methods=['DELETE'])
+
+    def not_modified(self):
+        raise HTTPException(status_code=HTTPStatus.NOT_MODIFIED)
 
     def id_not_found(self, id: str):
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND,
@@ -65,6 +69,19 @@ class BaseRoute:
             {'_id': new_data.inserted_id}
         )
         return created_data
+
+    def update(self, request: Request, id: str, data: Any) -> Any:
+        if len(data) >= 1:
+            update_result = request.app.database[self.path].update_one(
+                {'_id': id}, {'$set': data}
+            )
+
+            if update_result.modified_count == 0:
+                existing_data = self.find_by_id(request, id)
+                if (existing_data is not None):
+                    self.not_modified()
+
+        return self.find_by_id(request, id)
 
     def delete(self, request: Request,
                response: Response, id: str = Path(...)) -> Response:
