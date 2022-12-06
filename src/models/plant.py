@@ -70,6 +70,6 @@ class PlantNameConstraint(BaseConstraint):
 
 
 class PlantNumberConstraint(BaseConstraint):
-    def __init__(self, db: Any, collection: str = 'plant',
+    def __init__(self, db: Any, collection: str = 'plants',
                  attrib: str = NUMBER) -> None:
         super().__init__(db, collection, attrib)

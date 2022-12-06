@@ -1,3 +1,4 @@
+from models.enums.adv_ref import AdventureRef
 from models.enums.damage import Damage
 from models.enums.effect import Effect
 from models.enums.production import Production
