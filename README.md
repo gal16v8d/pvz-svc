@@ -45,7 +45,13 @@ pipenv run
 Exit virtual env:
 
 ```bash
-exit or deactivate
+exit
+```
+
+or
+
+```bash
+deactivate
 ```
 
 ## Windows
@@ -68,19 +74,32 @@ Then create the folder for allocate the virtual environment:
 py -m virtualenv env
 ```
 
+Optional (run if UnauthorizedAccess in powershell console):
+
+```bash
+Set-ExecutionPolicy Unrestricted -Scope Process
+```
+
 Then activate the virtual env:
 
 ```bash
-Set-ExecutionPolicy Unrestricted -Scope Process (run if UnauthorizedAccess in powershell console)
 .\venv\Scripts\activate.ps1
 ```
 
 Now you can install python libs as you need it
 
+# set up
+
+Configure all your dependencies in Pipfile.
+See: [Pypi](https://pypi.org/)
+
 # dependencies
 
 For generate requirements.txt file please execute:
+
+```bash
 pip3 freeze > requirements.txt
+```
 
 # docs
 
