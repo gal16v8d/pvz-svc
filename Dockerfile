@@ -22,5 +22,9 @@ WORKDIR /app/src
 # Expose the port that FastAPI will run on
 EXPOSE 8000
 
+ARG ATLAS_URI
+ARG DB_NAME
+ARG ENV
+
 # Command to run your application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
