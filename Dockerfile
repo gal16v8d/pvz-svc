@@ -13,8 +13,8 @@ RUN apt-get update && \
     curl -sSL https://install.python-poetry.org | python3.12 -
 
 # Install dependencies using poetry
-RUN poetry config virtualenvs.create false && \
-    poetry install --no-dev --no-interaction --no-ansi
+RUN /root/.local/bin/poetry config virtualenvs.create false && \
+    /root/.local/bin/poetry install --no-dev --no-interaction --no-ansi
 
 # Expose the port that FastAPI will run on
 EXPOSE 8000
