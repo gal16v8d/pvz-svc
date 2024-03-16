@@ -19,6 +19,9 @@ RUN /root/.local/bin/poetry config virtualenvs.create false && \
 # Change to the src directory
 WORKDIR /app/src
 
+# Expose the port that FastAPI will run on
+EXPOSE 8000
+
 # Railway pass env to image with the following args
 ARG DB_PVZ
 ARG PVZ_ENV
