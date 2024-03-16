@@ -1,4 +1,4 @@
-from dotenv import dotenv_values
+import os
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -10,7 +10,7 @@ from http import HTTPStatus
 from models import *
 from routes import *
 
-config = dotenv_values('.env')
+
 app: FastAPI = FastAPI(title="pvz-service",
                        description="Plants vs Zombies Info API",
                        version="0.0.1",
@@ -40,9 +40,9 @@ def duplicate_key_exc_handler(request: Request, exc: DuplicateKeyError):
 
 @app.on_event('startup')
 def startup_db_client():
-    app.mongodb_client = MongoClient(config['ATLAS_URI'])
-    app.database = app.mongodb_client[config['DB_NAME']]
-    app.env = config['ENV']
+    app.mongodb_client = MongoClient(os.getenv('DB_PVZ'))
+    app.database = app.mongodb_client.get_default_database()
+    app.env = os.getenv('PVZ_ENV')
     print('Connected to the MongoDB database!')
     create_indexes(app.database)
     print('Indexes updated!')
