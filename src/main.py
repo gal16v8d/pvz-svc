@@ -1,3 +1,4 @@
+from http import HTTPStatus
 import os
 
 from fastapi import FastAPI, Request
@@ -6,9 +7,8 @@ from fastapi.responses import JSONResponse
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 
-from http import HTTPStatus
-from models import *
-from routes import *
+from models import all_models
+from routes import all_routes
 
 
 app: FastAPI = FastAPI(title="pvz-service",
@@ -18,18 +18,8 @@ app: FastAPI = FastAPI(title="pvz-service",
 
 
 def create_indexes(db):
-    AchievementConstraint(db).create_indexes()
-    GardenNameConstraint(db).create_indexes()
-    GardenNumberConstraint(db).create_indexes()
-    ItemConstraint(db).create_indexes()
-    LevelConstraint(db).create_indexes()
-    MiniGameConstraint(db).create_indexes()
-    PlantNameConstraint(db).create_indexes()
-    PlantNumberConstraint(db).create_indexes()
-    PuzzleConstraint(db).create_indexes()
-    SurvivalConstraint(db).create_indexes()
-    ZombieNameConstraint(db).create_indexes()
-    ZombieNumberConstraint(db).create_indexes()
+    for model in all_models:
+        model(db).create_indexes()
 
 
 @app.exception_handler(DuplicateKeyError)
@@ -40,7 +30,9 @@ def duplicate_key_exc_handler(request: Request, exc: DuplicateKeyError):
 
 @app.on_event('startup')
 def startup_db_client():
-    app.mongodb_client = MongoClient(os.getenv('DB_PVZ'))
+    db_url = os.getenv('DB_PVZ')
+    print(f'db_url is defined? {db_url is not None}')
+    app.mongodb_client = MongoClient(db_url)
     app.database = app.mongodb_client.get_default_database()
     app.env = os.getenv('PVZ_ENV')
     print('Connected to the MongoDB database!')
@@ -53,13 +45,5 @@ def shutdown_db_client():
     app.mongodb_client.close()
 
 
-app.include_router(health_router)
-app.include_router(achievement_router)
-app.include_router(garden_router)
-app.include_router(item_router)
-app.include_router(level_router)
-app.include_router(minigame_router)
-app.include_router(plant_router)
-app.include_router(puzzle_router)
-app.include_router(survival_router)
-app.include_router(zombie_router)
+for route in all_routes:
+    app.include_router(route)
