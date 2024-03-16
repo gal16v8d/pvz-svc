@@ -26,9 +26,8 @@ ARG ATLAS_URI
 ARG DB_NAME
 ARG ENV
 
-ENV ATLAS_URI=${ATLAS_URI}
-ENV DB_NAME=${DB_NAME}
-ENV ENV=${ENV}
+RUN echo $DB_NAME
+RUN echo $ENV
 
 # Command to run your application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
