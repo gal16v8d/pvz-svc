@@ -27,7 +27,5 @@ ARG DB_PVZ
 ARG PVZ_ENV
 ARG PORT
 
-ENV PORT=${PORT}
-
 # Command to run your application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "$PORT"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
