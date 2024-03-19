@@ -1,0 +1,9 @@
+# Exclude unwanted dirs in image
+
+.ci
+.vscode
+dev_tools
+
+# Exclude unwanted files in image
+
+sonar-project.properties

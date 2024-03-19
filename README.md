@@ -162,3 +162,21 @@ uvicorn main:app --reload
 cd src
 pytest
 ```
+
+# Web deployment
+
+This app can be hosted in [Railway](https://railway.app), folder that helps with it is `.ci` folder.
+
+## List of cool technologies in use here
+
+- [FastApi](https://fastapi.tiangolo.com)
+- [poetry](https://python-poetry.org/)
+- [pymongo](https://pymongo.readthedocs.io/en/stable/)
+
+## License
+
+[MIT licensed](LICENSE).
+
+## Stay in touch
+
+- Author - [gal16v8d](https://github.com/gal16v8d)
