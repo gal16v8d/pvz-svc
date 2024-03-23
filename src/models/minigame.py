@@ -1,24 +1,22 @@
+'''Define Minigame model'''
 import uuid
-from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+from pymongo import database
 
 from consts.constants import NAME
 from models.base_constraint import BaseConstraint
+from models.base_model import PvZBaseModel
 
 
-class MiniGame(BaseModel):
+class MiniGame(PvZBaseModel):
+    '''MiniGame data'''
     id: str = Field(default_factory=uuid.uuid4, alias='_id')
     name: str = Field(..., min_length=3)
 
-    def dict(self, *args, **kwargs):
-        if kwargs and kwargs.get('exclude_none') is not None:
-            kwargs['exclude_none'] = True
-        return BaseModel.dict(self, *args, **kwargs)
-
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        '''Define Swagger config'''
+        json_schema_extra = {
             'example': {
                 'name': 'ZomBotany'
             }
@@ -26,6 +24,6 @@ class MiniGame(BaseModel):
 
 
 class MiniGameConstraint(BaseConstraint):
-    def __init__(self, db: Any, collection: str = 'minigames',
-                 attrib: str = NAME) -> None:
-        super().__init__(db, collection, attrib)
+    '''Fields that have some constraints for save/update (name)'''
+    def __init__(self, db: database.Database) -> None:
+        super().__init__(db, 'minigames', [NAME])

@@ -1,23 +1,21 @@
+'''Define Item model'''
 import uuid
-from typing import Optional, Any
+from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+from pymongo import database
 
-from consts.constants import NAME, NUMBER
+from consts.constants import NAME
 from models.base_constraint import BaseConstraint
-from models.enums import *
+from models.base_model import PvZBaseModel
 
 
-class ItemBase(BaseModel):
-
-    def dict(self, *args, **kwargs):
-        if kwargs and kwargs.get('exclude_none') is not None:
-            kwargs['exclude_none'] = True
-        return BaseModel.dict(self, *args, **kwargs)
+class ItemBase(PvZBaseModel):
+    '''Item data'''
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        '''Define Swagger config'''
+        json_schema_extra = {
             'example': {
                 'name': 'Shovel',
                 'note': 'Let you dig up a plant to make room for another'
@@ -26,17 +24,19 @@ class ItemBase(BaseModel):
 
 
 class Item(ItemBase):
+    '''Fields that can be populated'''
     id: str = Field(default_factory=uuid.uuid4, alias='_id')
     name: str = Field(..., min_length=3)
     note: str = Field(..., min_length=3)
 
 
 class ItemPartial(ItemBase):
+    '''Fields that can be updated'''
     name: Optional[str] = Field(default=None)
     note: Optional[str] = Field(default=None)
 
 
 class ItemConstraint(BaseConstraint):
-    def __init__(self, db: Any, collection: str = 'items',
-                 attrib: str = NAME) -> None:
-        super().__init__(db, collection, attrib)
+    '''Fields that have some constraints for save/update (name)'''
+    def __init__(self, db: database.Database) -> None:
+        super().__init__(db, 'items', [NAME])

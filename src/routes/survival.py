@@ -7,8 +7,8 @@ from models.survival import Survival, SurvivalPartial
 
 from .base_route import BaseRoute
 
-db_key: str = 'survivals'
 
+db_key: str = 'survivals'
 base_instance = BaseRoute(db_key, Survival)
 survival_router = base_instance.router
 
@@ -23,11 +23,11 @@ def create_survival(request: Request, survival: Survival = Body(...)
     return base_instance.create(request, enc_data)
 
 
-@survival_router.put('/{id}',
+@survival_router.put('/{model_id}',
                      response_description='Update a Survival',
                      response_model=Survival)
-def update_survival(request: Request, id: str = Path(...),
+def update_survival(request: Request, model_id: str = Path(...),
                     survival: SurvivalPartial = Body(...)) -> Survival:
     base_instance.validate_env(request)
     survival = {k: v for k, v in survival.dict().items() if v is not None}
-    return base_instance.update(request, id, survival)
+    return base_instance.update(request, model_id, survival)

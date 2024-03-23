@@ -1,23 +1,21 @@
+'''Define Level model'''
 import uuid
-from typing import Optional, Any
+from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+from pymongo import database
 
-from consts.constants import NAME, NUMBER
 from models.base_constraint import BaseConstraint
-from models.enums import *
+from models.base_model import PvZBaseModel
+from models.enums import AdventureRef
 
 
-class LevelBase(BaseModel):
-
-    def dict(self, *args, **kwargs):
-        if kwargs and kwargs.get('exclude_none') is not None:
-            kwargs['exclude_none'] = True
-        return BaseModel.dict(self, *args, **kwargs)
+class LevelBase(PvZBaseModel):
+    '''Level data'''
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        '''Define Swagger config'''
+        json_schema_extra = {
             'example': {
                 'level': '1-1',
                 'unlock': ['uuid'],
@@ -28,22 +26,24 @@ class LevelBase(BaseModel):
 
 
 class Level(LevelBase):
+    '''Fields that can be populated'''
     id: str = Field(default_factory=uuid.uuid4, alias='_id')
     level: str = Field(..., min_length=3)
-    unlock: list[str] = Field(...)
+    unlock: List[str] = Field(...)
     ref: AdventureRef = Field(...)
     is_minigame: bool = Field(...)
     notes: Optional[str] = Field(default=None)
 
 
 class LevelPartial(LevelBase):
+    '''Fields that can be updated'''
     level: Optional[str] = Field(default=None)
-    unlock: Optional[list[str]] = Field(default=None)
+    unlock: Optional[List[str]] = Field(default=None)
     ref: Optional[AdventureRef] = Field(default=None)
     is_minigame: Optional[bool] = Field(default=None)
 
 
 class LevelConstraint(BaseConstraint):
-    def __init__(self, db: Any, collection: str = 'levels',
-                 attrib: str = 'level') -> None:
-        super().__init__(db, collection, attrib)
+    '''Fields that have some constraints for save/update (level)'''
+    def __init__(self, db: database.Database) -> None:
+        super().__init__(db, 'levels', ['level'])

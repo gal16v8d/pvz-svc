@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from typing import Dict
 
+
 health_router: APIRouter = APIRouter(
     tags=['health'],
 )

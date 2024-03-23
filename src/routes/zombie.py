@@ -7,8 +7,8 @@ from models.zombie import Zombie, ZombiePartial
 
 from .base_route import BaseRoute
 
-db_key: str = 'zombies'
 
+db_key: str = 'zombies'
 base_instance = BaseRoute(db_key, Zombie)
 zombie_router = base_instance.router
 
@@ -22,11 +22,11 @@ def create_zombie(request: Request, zombie: Zombie = Body(...)) -> Zombie:
     return base_instance.create(request, enc_data)
 
 
-@zombie_router.put('/{id}',
+@zombie_router.put('/{model_id}',
                    response_description='Update a Zombie',
                    response_model=Zombie)
-def update_zombie(request: Request, id: str = Path(...),
+def update_zombie(request: Request, model_id: str = Path(...),
                   zombie: ZombiePartial = Body(...)) -> Zombie:
     base_instance.validate_env(request)
     zombie = {k: v for k, v in zombie.dict().items() if v is not None}
-    return base_instance.update(request, id, zombie)
+    return base_instance.update(request, model_id, zombie)

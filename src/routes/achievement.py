@@ -1,3 +1,4 @@
+'''Route for achievements api'''
 from http import HTTPStatus
 
 from fastapi import Body, Path, Request
@@ -7,8 +8,8 @@ from models.achievement import Achievement, AchievementPartial
 
 from .base_route import BaseRoute
 
-db_key: str = 'achievements'
 
+db_key: str = 'achievements'
 base_instance = BaseRoute(db_key, Achievement)
 achievement_router = base_instance.router
 
@@ -23,13 +24,13 @@ def create_achievement(request: Request, achievement: Achievement = Body(...)
     return base_instance.create(request, enc_data)
 
 
-@achievement_router.put('/{id}',
+@achievement_router.put('/{model_id}',
                         response_description='Update an Achievement',
                         response_model=Achievement)
-def update_achievement(request: Request, id: str = Path(...),
+def update_achievement(request: Request, model_id: str = Path(...),
                        achievement: AchievementPartial = Body(...)
                        ) -> Achievement:
     base_instance.validate_env(request)
     achievement = {k: v for k, v in achievement.dict().items()
                    if v is not None}
-    return base_instance.update(request, id, achievement)
+    return base_instance.update(request, model_id, achievement)
