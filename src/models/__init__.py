@@ -1,4 +1,5 @@
-'''Define all the models in a single file'''
+"""Define all the models in a single file"""
+
 from models.achievement import AchievementConstraint
 from models.garden import GardenConstraint
 from models.item import ItemConstraint
@@ -9,8 +10,14 @@ from models.puzzle import PuzzleConstraint
 from models.survival import SurvivalConstraint
 from models.zombie import ZombieConstraint
 
-all_models = [AchievementConstraint, GardenConstraint,
-              ItemConstraint, LevelConstraint,
-              MiniGameConstraint, PlantConstraint,
-              PuzzleConstraint, SurvivalConstraint,
-              ZombieConstraint]
+all_models = [
+    AchievementConstraint,
+    GardenConstraint,
+    ItemConstraint,
+    LevelConstraint,
+    MiniGameConstraint,
+    PlantConstraint,
+    PuzzleConstraint,
+    SurvivalConstraint,
+    ZombieConstraint,
+]

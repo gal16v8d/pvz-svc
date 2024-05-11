@@ -1,4 +1,5 @@
-'''Define Zombie model'''
+"""Define Zombie model"""
+
 import uuid
 from typing import Dict, List, Optional
 
@@ -12,7 +13,8 @@ from models.enums import Speed, ZombieToughness
 
 
 class ZombieBase(PvZBaseModel):
-    '''Zombie data'''
+    """Zombie data"""
+
     description: Optional[str] = Field(default=None)
     toughness_notes: Optional[Dict[str, ZombieToughness]] = Field(default=None)
     speed: Optional[List[Speed]] = Field(default=None)
@@ -22,24 +24,26 @@ class ZombieBase(PvZBaseModel):
     constraint: Optional[str] = Field(default=None)
 
     class Config:
-        '''Define Swagger config'''
+        """Define Swagger config"""
+
         json_schema_extra = {
-            'example': {
-                'name': 'Imp',
-                'description': 'Imps are tiny zombies'
-                ' hurled by Gargantuar deep into your defenses',
-                'toughness': 'low',
-                'text': "Imp may be small, but he's wiry."
+            "example": {
+                "name": "Imp",
+                "description": "Imps are tiny zombies"
+                " hurled by Gargantuar deep into your defenses",
+                "toughness": "low",
+                "text": "Imp may be small, but he's wiry."
                 "He's proficient in zombie judo, zombie karate"
                 " and zombie bare-knuckle brawling. He also "
-                "plays the melodica."
+                "plays the melodica.",
             }
         }
 
 
 class Zombie(ZombieBase):
-    '''Fields that can be populated'''
-    id: str = Field(default_factory=uuid.uuid4, alias='_id')
+    """Fields that can be populated"""
+
+    id: str = Field(default_factory=uuid.uuid4, alias="_id")
     number: int = Field(..., ge=1, le=26)
     name: str = Field(..., min_length=3)
     text: str = Field(..., min_length=10)
@@ -47,7 +51,8 @@ class Zombie(ZombieBase):
 
 
 class ZombiePartial(ZombieBase):
-    '''Fields that can be updated'''
+    """Fields that can be updated"""
+
     number: Optional[int] = Field(default=None)
     name: Optional[str] = Field(default=None)
     text: Optional[str] = Field(default=None)
@@ -55,6 +60,7 @@ class ZombiePartial(ZombieBase):
 
 
 class ZombieConstraint(BaseConstraint):
-    '''Fields that have some constraints for save/update (name/number)'''
+    """Fields that have some constraints for save/update (name/number)"""
+
     def __init__(self, db: database.Database) -> None:
-        super().__init__(db, 'zombies', [NAME, NUMBER])
+        super().__init__(db, "zombies", [NAME, NUMBER])

@@ -1,4 +1,5 @@
-'''Define Garden model'''
+"""Define Garden model"""
+
 import uuid
 from typing import Optional
 
@@ -11,23 +12,25 @@ from models.base_model import PvZBaseModel
 
 
 class GardenBase(PvZBaseModel):
-    '''Garden data'''
+    """Garden data"""
 
     class Config:
-        '''Define Swagger config'''
+        """Define Swagger config"""
+
         json_schema_extra = {
-            'example': {
-                'number': 1,
-                'name': 'Day Garden',
-                'max_plants': 32,
-                'coin_helper': True
+            "example": {
+                "number": 1,
+                "name": "Day Garden",
+                "max_plants": 32,
+                "coin_helper": True,
             }
         }
 
 
 class Garden(GardenBase):
-    '''Fields that can be populated'''
-    id: str = Field(default_factory=uuid.uuid4, alias='_id')
+    """Fields that can be populated"""
+
+    id: str = Field(default_factory=uuid.uuid4, alias="_id")
     number: int = Field(..., ge=1, le=4)
     name: str = Field(..., min_length=3)
     max_plants: int = Field(..., ge=1, le=32)
@@ -35,7 +38,8 @@ class Garden(GardenBase):
 
 
 class GardenPartial(GardenBase):
-    '''Fields that can be updated'''
+    """Fields that can be updated"""
+
     number: Optional[int] = Field(default=None)
     name: Optional[str] = Field(default=None)
     max_plants: Optional[int] = Field(default=None)
@@ -43,6 +47,7 @@ class GardenPartial(GardenBase):
 
 
 class GardenConstraint(BaseConstraint):
-    '''Fields that have some constraints for save/update (number)'''
+    """Fields that have some constraints for save/update (number)"""
+
     def __init__(self, db: database.Database) -> None:
-        super().__init__(db, 'gardens', [NAME, NUMBER])
+        super().__init__(db, "gardens", [NAME, NUMBER])

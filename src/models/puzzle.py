@@ -1,4 +1,5 @@
-'''Define Puzzle model'''
+"""Define Puzzle model"""
+
 import uuid
 from typing import Optional
 
@@ -12,35 +13,39 @@ from models.enums import PuzzleCategory
 
 
 class PuzzleBase(PvZBaseModel):
-    '''Puzzle data'''
+    """Puzzle data"""
 
     class Config:
-        '''Define Swagger config'''
+        """Define Swagger config"""
+
         json_schema_extra = {
-            'example': {
-                'name': 'Vasebreaker',
-                'category': 'Vasebreaker',
-                'with_streak': 'false'
+            "example": {
+                "name": "Vasebreaker",
+                "category": "Vasebreaker",
+                "with_streak": "false",
             }
         }
 
 
 class Puzzle(PuzzleBase):
-    '''Fields that can be populated'''
-    id: str = Field(default_factory=uuid.uuid4, alias='_id')
+    """Fields that can be populated"""
+
+    id: str = Field(default_factory=uuid.uuid4, alias="_id")
     name: str = Field(..., min_length=3)
     category: PuzzleCategory = Field(...)
     with_streak: bool = Field(default=False)
 
 
 class PuzzlePartial(PuzzleBase):
-    '''Fields that can be updated'''
+    """Fields that can be updated"""
+
     name: Optional[str] = Field(default=None)
     category: Optional[PuzzleCategory] = Field(default=None)
     with_streak: bool = Field(default=False)
 
 
 class PuzzleConstraint(BaseConstraint):
-    '''Fields that have some constraints for save/update (name)'''
+    """Fields that have some constraints for save/update (name)"""
+
     def __init__(self, db: database.Database) -> None:
-        super().__init__(db, 'puzzles', [NAME])
+        super().__init__(db, "puzzles", [NAME])

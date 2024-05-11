@@ -1,13 +1,15 @@
-from fastapi import APIRouter
+"""Health router"""
+
 from typing import Dict
+from fastapi import APIRouter
 
 
 health_router: APIRouter = APIRouter(
-    tags=['health'],
+    tags=["health"],
 )
 
 
-@health_router.get('/health',
-                   response_description='Check current API status')
+@health_router.get("/health", response_description="Check current API status")
 def health() -> Dict[str, str]:
-    return {'status': 'UP'}
+    """QUick endpoint to check app status"""
+    return {"status": "UP"}
