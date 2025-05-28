@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.12-slim
+FROM python:3.13-slim
 
 # Set the working directory in the container
 WORKDIR /app
@@ -10,14 +10,11 @@ COPY . /app
 # Install poetry
 RUN apt-get update && \
     apt-get install -y curl && \
-    curl -sSL https://install.python-poetry.org | python3.12 -
+    curl -sSL https://install.python-poetry.org | python3.13 -
 
 # Install dependencies using poetry
 RUN /root/.local/bin/poetry config virtualenvs.create false && \
-    /root/.local/bin/poetry install --no-dev --no-interaction --no-ansi
-
-# Change to the src directory
-WORKDIR /app/src
+    /root/.local/bin/poetry install --no-root --no-interaction --no-ansi
 
 # Railway pass env to image with the following args
 ARG DB_PVZ
@@ -28,4 +25,4 @@ ARG PORT
 EXPOSE ${PORT}
 
 # Command to run your application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

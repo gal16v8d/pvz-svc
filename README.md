@@ -47,6 +47,12 @@ Remove a dependency you don't need:
 poetry remove lib_here
 ```
 
+Update all (updatable) libs
+
+```bash
+poetry update
+```
+
 # Set up
 
 # env
@@ -94,51 +100,22 @@ poetry env use $USER_HOME/.pyenv/versions/3.12.1/bin/python
 
 - then install using commands like the ones in the previous section
 
-## Windows
+# Formatter
 
-Update pip:
+Using `black` as code formatter
+Can be used this way:
 
 ```bash
-py -m pip install --upgrade pip
+poetry run black .
 ```
 
-Install python3-venv:
+# Type checking
+
+Using `mypy` for type checking
+Can be used this way:
 
 ```bash
-py -m pip install virtualenv
-```
-
-Then create the folder for allocate the virtual environment:
-
-```bash
-py -m virtualenv env
-```
-
-Optional (run if UnauthorizedAccess in powershell console):
-
-```bash
-Set-ExecutionPolicy Unrestricted -Scope Process
-```
-
-Then activate the virtual env:
-
-```bash
-.\venv\Scripts\activate.ps1
-```
-
-Now you can install python libs as you need it
-
-# set up
-
-Configure all your dependencies in Pipfile.
-See: [Pypi](https://pypi.org/)
-
-# dependencies
-
-For generate requirements.txt file please execute:
-
-```bash
-pip3 freeze > requirements.txt
+poetry run mypy app tests
 ```
 
 # docs
@@ -152,14 +129,12 @@ You might need to create a DB in Atlas Mongo, then please reference `.env.sample
 file with the relevant database info. Once ready you can do the following to launch:
 
 ```bash
-cd src
-uvicorn main:app --reload
+uvicorn app:app --reload
 ```
 
 # test
 
 ```bash
-cd src
 pytest
 ```
 
