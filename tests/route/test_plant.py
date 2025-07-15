@@ -1,6 +1,5 @@
 """Base tests"""
 
-import os
 from http import HTTPStatus
 from fastapi.testclient import TestClient
 

@@ -2,7 +2,7 @@
 
 import uuid
 
-from pydantic import Field
+from pydantic import ConfigDict, Field
 from pymongo import database
 
 from app.consts.constants import NAME
@@ -13,13 +13,10 @@ from app.models.base_model import PvZBaseModel
 class MiniGame(PvZBaseModel):
     """MiniGame data"""
 
-    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()), alias="_id")
     name: str = Field(..., min_length=3)
 
-    class Config:
-        """Define Swagger config"""
-
-        json_schema_extra = {"example": {"name": "ZomBotany"}}
+    model_config = ConfigDict(json_schema_extra={"example": {"name": "ZomBotany"}})
 
 
 class MiniGameConstraint(BaseConstraint):

@@ -3,7 +3,7 @@
 import uuid
 from typing import Optional
 
-from pydantic import Field
+from pydantic import ConfigDict, Field
 from pymongo import database
 
 from app.consts.constants import NAME
@@ -15,22 +15,21 @@ from app.models.enums import PuzzleCategory
 class PuzzleBase(PvZBaseModel):
     """Puzzle data"""
 
-    class Config:
-        """Define Swagger config"""
-
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "name": "Vasebreaker",
                 "category": "Vasebreaker",
                 "with_streak": "false",
             }
         }
+    )
 
 
 class Puzzle(PuzzleBase):
     """Fields that can be populated"""
 
-    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()), alias="_id")
     name: str = Field(..., min_length=3)
     category: PuzzleCategory = Field(...)
     with_streak: bool = Field(default=False)

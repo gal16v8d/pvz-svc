@@ -3,7 +3,7 @@
 import uuid
 from typing import Optional
 
-from pydantic import Field
+from pydantic import ConfigDict, Field
 from pymongo import database
 
 from app.consts.constants import NAME, NUMBER
@@ -23,10 +23,8 @@ class ZombieBase(PvZBaseModel):
     weakness: Optional[list[str]] = Field(default=None)
     constraint: Optional[str] = Field(default=None)
 
-    class Config:
-        """Define Swagger config"""
-
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "name": "Imp",
                 "description": "Imps are tiny zombies"
@@ -38,12 +36,13 @@ class ZombieBase(PvZBaseModel):
                 "plays the melodica.",
             }
         }
+    )
 
 
 class Zombie(ZombieBase):
     """Fields that can be populated"""
 
-    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()), alias="_id")
     number: int = Field(..., ge=1, le=26)
     name: str = Field(..., min_length=3)
     text: str = Field(..., min_length=10)

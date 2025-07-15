@@ -138,6 +138,66 @@ uvicorn app:app --reload
 pytest
 ```
 
+# automation
+
+Run the server using the command on launch section
+Then open another console, activate the env and go to automation folder
+Once there run the tests using:
+
+```bash
+behave
+```
+
+You can see the console output with several features, scenarios and steps and its status as passed, failed or skipped.
+
+# Advanced use cases
+
+If multiple python versions are found in the operative system, then
+
+- use pyenv to handle the versions
+- if needed set the local python for this project, like
+
+```bash
+pyenv local 3.12.1
+```
+
+- you can confirm all good by checking
+
+```bash
+pyenv which python
+```
+
+- set the specific python version like
+
+```bash
+poetry env use $USER_HOME/.pyenv/versions/3.12.1/bin/python
+```
+
+- then install using commands like the ones in the previous section
+
+# Formatter
+
+Using `black` as code formatter
+Can be used this way:
+
+```bash
+poetry run black .
+```
+
+# Type checking
+
+Using `mypy` for type checking
+Can be used this way:
+
+```bash
+poetry run mypy app tests
+```
+
+# api docs
+
+http://{host}:{port}/docs (swagger)
+http://{host}:{port}/redoc (redoc)
+
 # Web deployment
 
 This app can be hosted in [Railway](https://railway.app), folder that helps with it is `.ci` folder.

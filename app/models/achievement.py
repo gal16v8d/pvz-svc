@@ -3,7 +3,7 @@
 import uuid
 from typing import Optional
 
-from pydantic import Field
+from pydantic import ConfigDict, Field
 from pymongo import database
 
 from app.consts.constants import NAME
@@ -14,21 +14,20 @@ from app.models.base_constraint import BaseConstraint
 class AchievementBase(PvZBaseModel):
     """Achievement data"""
 
-    class Config:
-        """Define Swagger config"""
-
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "name": "Home Lawn Security",
                 "description": "Complete adventure mode",
             }
         }
+    )
 
 
 class Achievement(AchievementBase):
     """Fields that can be populated"""
 
-    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()), alias="_id")
     name: str = Field(..., min_length=3)
     description: str = Field(..., min_length=10)
 

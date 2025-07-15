@@ -20,6 +20,8 @@ httpx = "^0.28.1"
 black = "^25.1.0"
 mypy = "^1.16.0"
 pytest-cov = "^6.1.1"
+behave = "^1.2.6"
+requests = "^2.32.4"
 
 [build-system]
 requires = ["poetry-core"]

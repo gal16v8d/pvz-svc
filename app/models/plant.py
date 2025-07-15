@@ -3,7 +3,7 @@
 import uuid
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import ConfigDict, Field
 from pymongo import database
 
 from app.consts.constants import NAME, NUMBER
@@ -28,15 +28,8 @@ class PlantBase(PvZBaseModel):
     cost: Optional[int] = Field(default=None, ge=0, le=500)
     recharge: Optional[Recharge] = Field(default=None)
 
-    def dict(self, *args, **kwargs):
-        if kwargs and kwargs.get("exclude_none") is not None:
-            kwargs["exclude_none"] = True
-        return BaseModel.dict(self, *args, **kwargs)
-
-    class Config:
-        """Define Swagger config"""
-
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "name": "Winter Melons",
                 "description": "Winter Melons do heavy damage "
@@ -53,6 +46,7 @@ class PlantBase(PvZBaseModel):
                 "recharge": "very slow",
             }
         }
+    )
 
 
 class Plant(PlantBase):

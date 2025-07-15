@@ -1,14 +1,16 @@
 """Define man fast api target to run"""
 
-from http import HTTPStatus
-
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, HTTPException
 from pymongo.errors import DuplicateKeyError
 
 from app.core.database import pvz_database
 from app.core.env import current_env
+from app.handlers.error_handlers import (
+    duplicate_key_exc_handler,
+    general_exc_handler,
+    http_exc_handler,
+)
 from app.routes import all_routes
 
 
@@ -32,11 +34,6 @@ app: FastAPI = FastAPI(
 for route in all_routes:
     app.include_router(route)
 
-
-@app.exception_handler(DuplicateKeyError)
-def duplicate_key_exc_handler(_: Request, exc: DuplicateKeyError) -> JSONResponse:
-    """On duplicate error, return UNPROCESSABLE_ENTITY"""
-    return JSONResponse(
-        status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-        content={"message": f"Error -> {exc.details}"},
-    )
+app.add_exception_handler(HTTPException, http_exc_handler)
+app.add_exception_handler(DuplicateKeyError, duplicate_key_exc_handler)
+app.add_exception_handler(Exception, general_exc_handler)

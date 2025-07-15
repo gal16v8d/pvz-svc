@@ -3,7 +3,7 @@
 import uuid
 from typing import Optional
 
-from pydantic import Field
+from pydantic import ConfigDict, Field
 from pymongo import database
 
 from app.consts.constants import NAME, NUMBER
@@ -14,10 +14,8 @@ from app.models.base_model import PvZBaseModel
 class GardenBase(PvZBaseModel):
     """Garden data"""
 
-    class Config:
-        """Define Swagger config"""
-
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "number": 1,
                 "name": "Day Garden",
@@ -25,12 +23,13 @@ class GardenBase(PvZBaseModel):
                 "coin_helper": True,
             }
         }
+    )
 
 
 class Garden(GardenBase):
     """Fields that can be populated"""
 
-    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()), alias="_id")
     number: int = Field(..., ge=1, le=4)
     name: str = Field(..., min_length=3)
     max_plants: int = Field(..., ge=1, le=32)
