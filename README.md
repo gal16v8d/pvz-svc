@@ -195,8 +195,8 @@ poetry run mypy app tests
 
 # api docs
 
-http://{host}:{port}/docs (swagger)
-http://{host}:{port}/redoc (redoc)
+* http://{host}:{port}/docs (swagger)
+* http://{host}:{port}/redoc (redoc)
 
 # Web deployment
 

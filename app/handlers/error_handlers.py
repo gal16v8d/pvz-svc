@@ -11,7 +11,10 @@ def http_exc_handler(request: Request, exc: HTTPException) -> JSONResponse:
     """On http exception, return JSON response with error details."""
     return JSONResponse(
         status_code=HTTPStatus(exc.status_code),
-        content={"path": request.url.path, "message": f"Error -> {exc.detail if exc.detail else str(exc)}"},
+        content={
+            "path": request.url.path,
+            "message": f"Error -> {exc.detail if exc.detail else str(exc)}",
+        },
     )
 
 

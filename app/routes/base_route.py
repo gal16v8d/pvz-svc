@@ -141,6 +141,7 @@ class BaseRoute:
                     self._not_modified()
 
             return self.find_by_id(request, model_id)
+
         return update_fn
 
     def list_all(self, request: Request) -> list[ReadSchemaType]:
