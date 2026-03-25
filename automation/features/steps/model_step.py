@@ -12,7 +12,6 @@ from assertions.rest import RestAssertions
 import generic_api_step
 from features import constants
 
-
 MODELS: dict[str, Any] = {
     "achievements": {
         "id": str,

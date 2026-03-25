@@ -2,7 +2,6 @@
 
 from typing import Final
 
-
 BODY: Final[str] = "body"
 JSON_TYPE: Final[str] = "application/json"
 JSON_NODE_DETAIL: Final[str] = "detail"

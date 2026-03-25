@@ -7,19 +7,19 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.13"
-fastapi = "^0.115.2"
-pymongo = "^4.13.0"
-uvicorn = "^0.34.3"
-python-dotenv = "^1.1.0"
+fastapi = "^0.135.0"
+pymongo = "^4.16.0"
+uvicorn = "^0.42.0"
+python-dotenv = "^1.2.2"
 
 [tool.poetry.group.dev.dependencies]
-pylint = "^3.3.7"
-pytest = "^8.4.0"
+pylint = "^4.0.0"
+pytest = "^9.0.0"
 mongomock = "^4.3.0"
 httpx = "^0.28.1"
-black = "^25.1.0"
+black = "^26.0.0"
 mypy = "^1.16.0"
-pytest-cov = "^6.1.1"
+pytest-cov = "^7.0.0"
 behave = "^1.2.6"
 requests = "^2.32.4"
 

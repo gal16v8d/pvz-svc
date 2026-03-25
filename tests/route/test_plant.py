@@ -52,9 +52,9 @@ def test_post_wont_work_in_prod(client: TestClient) -> None:
     assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 
-def test_put_wont_work_in_prod(client: TestClient) -> None:
+def test_patch_wont_work_in_prod(client: TestClient) -> None:
     """Check put should not work for prod env"""
-    response = client.put(
+    response = client.patch(
         "/api/plants/1",
         json={
             "name": "Fume-Shroom",

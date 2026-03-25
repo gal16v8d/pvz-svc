@@ -6,7 +6,6 @@ from typing import Final
 from app.consts import env
 from app.core.env import current_env
 
-
 LOG_NAME: Final[str] = "pvz"
 LOG_LEVEL = logging.INFO
 LOG_FILE: Final[str] = f"{LOG_NAME}.log"

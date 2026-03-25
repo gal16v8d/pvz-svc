@@ -11,7 +11,6 @@ from app.configs.log_cfg import LOG_NAME
 from app.core.env import current_env
 from app.models import all_models
 
-
 log = logging.getLogger(LOG_NAME)
 
 

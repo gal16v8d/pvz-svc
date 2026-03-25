@@ -2,7 +2,6 @@
 
 from typing import Final
 
-
 ENV_FILE: Final[str] = ".env"
 PROD_ENV: Final[str] = "prod"
 

@@ -10,7 +10,6 @@ from app.consts import env
 from app.core.env import current_env
 from app.models.base_model import PvZBaseModel
 
-
 ReadSchemaType = TypeVar("ReadSchemaType", bound=PvZBaseModel)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=PvZBaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=PvZBaseModel)
